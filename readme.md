@@ -12,5 +12,5 @@ tindie_APIkey = "Tindie.Com API Key Which Can Be Generated At https://www.tindie
 tindie_username = "Tindie Seller Username"
 ```
 
-* Change the database details in init.py
+* 
 * Run the init.py
