@@ -47,7 +47,6 @@ tindie_create_tindie_orders_table = ("CREATE TABLE tindie_orders ("
                             "shipping_postcode varchar(255) NOT NULL,"
                             "order_shipping_status tinyint(1) NOT NULL,"
                             "order_tracking_code varchar(255) NOT NULL,"
-                            "order_payment_status enum('pending','complete') NOT NULL,"
                             "order_status enum('new','shipped','completed') NOT NULL DEFAULT 'new',"
                             "PRIMARY KEY (order_id));")
                    
