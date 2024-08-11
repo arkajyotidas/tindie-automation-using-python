@@ -28,15 +28,43 @@ for i in range(tindie_total_orders_pages):
     tindie_order_data = requests.get('https://www.tindie.com/api/v1/order/?format=json&username='+tindie_username+'&api_key='+tindie_APIkey+'&offset='+offset).json()
     tindie_order_count = 0
     for tindie_order_count in range(tindie_total_order_data["meta"]["total_count"]):
-        tindie_order_data_number = tindie_order_data["orders"][tindie_order_count-1]["number"]
-        tindie_order_data_email = tindie_order_data["orders"][tindie_order_count-1]["email"]
+        tindie_order_data_customer_company_name = tindie_order_data["orders"][tindie_order_count-1]["company_title"]
+        tindie_order_data_order_placed_date = tindie_order_data["orders"][tindie_order_count-1]["date"]
+        tindie_order_data_order_shipped_date = tindie_order_data["orders"][tindie_order_count-1]["date_shipped"]
+        tindie_order_data_customer_email = tindie_order_data["orders"][tindie_order_count-1]["email"]
+        tindie_order_data_customer_name = tindie_order_data["orders"][tindie_order_count-1]["shipping_name"]
+        tindie_order_data_order_number = tindie_order_data["orders"][tindie_order_count-1]["number"]
+        tindie_order_data_customer_contact = tindie_order_data["orders"][tindie_order_count-1]["phone"]
+        tindie_order_data_order_shipping_status = tindie_order_data["orders"][tindie_order_count-1]["shipped"]
+        tindie_order_data_shipping_city = tindie_order_data["orders"][tindie_order_count-1]["shipping_city"]
+        tindie_order_data_shipping_country = tindie_order_data["orders"][tindie_order_count-1]["shipping_country"]
+        tindie_order_data_shipping_state = tindie_order_data["orders"][tindie_order_count-1]["shipping_state"]
+        tindie_order_data_shipping_street = tindie_order_data["orders"][tindie_order_count-1]["shipping_street"]
+        tindie_order_data_shipping_postcode = tindie_order_data["orders"][tindie_order_count-1]["shipping_postcode"]
+        tindie_order_data_order_amount_total = tindie_order_data["orders"][tindie_order_count-1]["total"]
+        tindie_order_data_order_amount_cc_charge = tindie_order_data["orders"][tindie_order_count-1]["total_ccfee"]
+        tindie_order_data_order_amount_tindie_charge = tindie_order_data["orders"][tindie_order_count-1]["total_tindiefee"]
+        tindie_order_data_order_amount_received = tindie_order_data["orders"][tindie_order_count-1]["total_seller"]
+        tindie_order_data_order_tracking_code = tindie_order_data["orders"][tindie_order_count-1]["tracking_code"]
+
         tindie_search_statement = ("select * from tindie_orders where order_number = %(tindie_order_number)s")
-        tindie_db_cursor.execute(tindie_search_statement,{'tindie_order_number' : tindie_order_data_number})
-        search_results = tindie_db_cursor.fetchall
+        tindie_db_cursor.execute(tindie_search_statement,{'tindie_order_number' : tindie_order_data_order_number})
+        search_results = tindie_db_cursor.fetchall()
         row_count = tindie_db_cursor.rowcount
         if row_count == 0:
-            tindie_db_insert_stmt_col = ("insert into tindie_orders (order_number, customer_email) values (%s,%s)") 
-            tindie_db_insert_stmt_values = (tindie_order_data_number,tindie_order_data_email)
+            tindie_db_insert_stmt_col = ("insert into tindie_orders (order_number,order_amount_total,order_amount_cc_charge,"
+                                         "order_amount_tindie_charge,order_amount_received,order_placed_date,order_shipped_date,customer_company_name,"
+                                         "customer_email,customer_contact,customer_name,shipping_country,shipping_state,shipping_city,shipping_street,"
+                                         "shipping_postcode,order_shipping_status,order_tracking_code) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)") 
+            tindie_db_insert_stmt_values = (tindie_order_data_order_number,tindie_order_data_order_amount_total,
+                                            tindie_order_data_order_amount_cc_charge,tindie_order_data_order_amount_tindie_charge,
+                                            tindie_order_data_order_amount_received,tindie_order_data_order_placed_date,tindie_order_data_order_shipped_date,
+                                            tindie_order_data_customer_company_name,tindie_order_data_customer_email,
+                                            tindie_order_data_customer_contact,tindie_order_data_customer_name,
+                                            tindie_order_data_shipping_country,tindie_order_data_shipping_state,
+                                            tindie_order_data_shipping_city,tindie_order_data_shipping_street,
+                                            tindie_order_data_shipping_postcode,tindie_order_data_order_shipping_status,tindie_order_data_order_tracking_code
+                                            )
             tindie_db_cursor.execute(tindie_db_insert_stmt_col,tindie_db_insert_stmt_values)
             tindie_db.commit()
         else:
