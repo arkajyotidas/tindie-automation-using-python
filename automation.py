@@ -1,3 +1,12 @@
+#
+# @author [Arkajyoti Das]
+# @email [das.arkajyoti@zohomail.in]
+# @create date 2024-08-11 13:30:46
+# @modify date 2024-08-11 13:30:46
+# @desc [Tindie Order Automation By Arkajyoti Das]
+# @website [https://www.arkajyotidas.com]
+# 
+
 from dotenv import load_dotenv
 import mysql.connector
 import requests
