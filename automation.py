@@ -77,6 +77,17 @@ for i in range(tindie_total_orders_pages):
                                             tindie_order_data_order_status)
             tindie_db_cursor.execute(tindie_db_insert_stmt_col,tindie_db_insert_stmt_values)
             tindie_db.commit()
+            for i in tindie_order_data['orders'][tindie_order_count-1]['items']:
+                tindie_db_insert_stmt_col = ("Insert into tindie_order_items (order_number,model_number,model_name,quantity,model_sku) values (%s,%s,%s,%s,%s)")
+                tindie_order_product_model_number = i["model_number"]
+                tindie_order_product_model_name = i["product"]
+                tindie_order_product_quantity = i["quantity"]
+                tindie_order_product_sku = i["sku"]
+
+                tindie_db_insert_stmt_values = (tindie_order_data_order_number,tindie_order_product_model_number,tindie_order_product_model_name,tindie_order_product_quantity,tindie_order_product_sku)
+                tindie_db_cursor.execute(tindie_db_insert_stmt_col,tindie_db_insert_stmt_values)
+                tindie_db.commit()
+
         else:
             continue
     tindie_order_count = tindie_order_count+50
