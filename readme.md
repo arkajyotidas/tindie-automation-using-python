@@ -1,4 +1,6 @@
-## Tindie Automation Using Python 
+# Tindie Automation Using Python 
+### Coded In Very Simple Way - Even Noobies Can Read :V
+
 
 * Clone the repositories in the local or production environment
 * Create .env file the code directory.

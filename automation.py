@@ -8,10 +8,7 @@
 # 
 
 from dotenv import load_dotenv
-import mysql.connector
-import requests
-import os
-import math
+import mysql.connector, requests, os, math
 
 i = 0
 

@@ -73,4 +73,4 @@ if(tindie_db_first):
     tindie_db_cursor.execute(tindie_create_tindie_orders_table)
     tindie_db_cursor.close()
 else:
-    print("Connection Failure")
+    print("Failed To Create Database")
