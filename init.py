@@ -2,8 +2,7 @@
 # @author [Arkajyoti Das]
 # @email [das.arkajyoti@zohomail.in]
 # @create date 2024-08-11 13:30:46
-# @modify date 2024-08-11 13:30:46
-# @desc [Tindie Order Automation By Arkajyoti Das]
+# @desc [Automatic Tindie Order Insertion To Database By Arkajyoti Das]
 # @website [https://www.arkajyotidas.com]
 # 
 
@@ -13,21 +12,15 @@ import mysql.connector
 
 load_dotenv()
 
-tindie_db_host = os.getenv("tindie_db_host")
-tindie_db_name = os.getenv("tindie_db_name")
-tindie_db_user = os.getenv("tindie_db_user")
-tindie_db_password = os.getenv("tindie_db_password")
+t_db_host = os.getenv("tindie_db_host")
+t_db_name = os.getenv("tindie_db_name")
+t_db_user = os.getenv("tindie_db_user")
+t_db_pass = os.getenv("tindie_db_password")
 
-tindie_create_db_stmt = ("Create Database if not exists "+ tindie_db_name +" ;")
+t_c_db_stmt = ("Create Database if not exists "+ t_db_name +" ;")
 
-tindie_create_tindie_order_items = ("CREATE TABLE tindie_order_items ("
-                                    "order_number bigint NOT NULL,"
-                                    "model_number varchar(50) NOT NULL,"
-                                    "model_name varchar(100) NOT NULL,"
-                                    "quantity tinyint NOT NULL,"
-                                    "model_sku varchar(50) NOT NULL);")
 
-tindie_create_tindie_orders_table = ("CREATE TABLE tindie_orders ("
+t_c_tb_tindie_order_list = ("CREATE TABLE tindie_order_list ("
                             "order_id int NOT NULL AUTO_INCREMENT,"
                             "order_number varchar(50) NOT NULL,"
                             "order_amount_total float NOT NULL,"
@@ -49,28 +42,34 @@ tindie_create_tindie_orders_table = ("CREATE TABLE tindie_orders ("
                             "order_tracking_code varchar(255) NOT NULL,"
                             "order_status enum('new','shipped','completed') NOT NULL DEFAULT 'new',"
                             "PRIMARY KEY (order_id));")
+
+t_c_tb_tindie_order_items = ("CREATE TABLE tindie_order_items ("
+                                    "order_number bigint NOT NULL,"
+                                    "model_name varchar(100) NOT NULL,"
+                                    "quantity tinyint NOT NULL,"
+                                    "model_sku varchar(50) NOT NULL);")
                    
 
-tindie_db_first = mysql.connector.connect (
-    host = tindie_db_host,
-    user = tindie_db_user,
-    password = tindie_db_password
+t_db_init = mysql.connector.connect (
+    host = t_db_host,
+    user = t_db_user,
+    password = t_db_pass
     )
 
-if(tindie_db_first):
-    tindie_db_first_cursor=tindie_db_first.cursor()
-    tindie_db_first_cursor.execute(tindie_create_db_stmt)
-    tindie_db_first_cursor.close()
+if(t_db_init):
+    t_db_init_cursor=t_db_init.cursor()
+    t_db_init_cursor.execute(t_c_db_stmt)
+    t_db_init_cursor.close()
 
     tindie_db = mysql.connector.connect (
-        host = tindie_db_host,
-        database = tindie_db_name,
-        user = tindie_db_user,
-        password = tindie_db_password
+        host = t_db_host,
+        database = t_db_name,
+        user = t_db_user,
+        password = t_db_pass
     )
     tindie_db_cursor= tindie_db.cursor()
-    tindie_db_cursor.execute(tindie_create_tindie_order_items)
-    tindie_db_cursor.execute(tindie_create_tindie_orders_table)
+    tindie_db_cursor.execute(t_c_tb_tindie_order_list)
+    tindie_db_cursor.execute(t_c_tb_tindie_order_items)
     tindie_db_cursor.close()
 else:
     print("Failed To Create Database")
