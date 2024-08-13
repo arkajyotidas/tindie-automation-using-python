@@ -7,8 +7,7 @@
 # 
 
 from dotenv import load_dotenv
-import os
-import mysql.connector
+import os, mysql.connector
 
 load_dotenv()
 
@@ -27,8 +26,8 @@ t_c_tb_tindie_order_list = ("CREATE TABLE tindie_order_list ("
                             "order_amount_cc_charge float NOT NULL,"
                             "order_amount_tindie_charge float NOT NULL,"
                             "order_amount_received float NOT NULL,"
-                            "order_placed_date date NOT NULL,"
-                            "order_shipped_date date NOT NULL,"
+                            "placed_date date NOT NULL,"
+                            "shipped_date date NOT NULL,"
                             "customer_company_name varchar(255) NOT NULL,"
                             "customer_email varchar(255) NOT NULL,"
                             "customer_contact varchar(255) NOT NULL,"
@@ -38,18 +37,16 @@ t_c_tb_tindie_order_list = ("CREATE TABLE tindie_order_list ("
                             "shipping_city varchar(255) NOT NULL,"
                             "shipping_street varchar(255) NOT NULL,"
                             "shipping_postcode varchar(255) NOT NULL,"
-                            "order_shipping_status tinyint(1) NOT NULL,"
-                            "order_tracking_code varchar(255) NOT NULL,"
-                            "order_status enum('new','shipped','completed') NOT NULL DEFAULT 'new',"
+                            "shipping_status tinyint(1) NOT NULL,"
+                            "tracking_code varchar(255) NOT NULL,"
                             "PRIMARY KEY (order_id));")
 
 t_c_tb_tindie_order_items = ("CREATE TABLE tindie_order_items ("
                                     "order_number bigint NOT NULL,"
                                     "model_name varchar(100) NOT NULL,"
-                                    "quantity tinyint NOT NULL,"
+                                    "model_quantity tinyint NOT NULL,"
                                     "model_sku varchar(50) NOT NULL);")
                    
-
 t_db_init = mysql.connector.connect (
     host = t_db_host,
     user = t_db_user,
